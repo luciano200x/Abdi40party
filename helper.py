@@ -3,9 +3,9 @@ from urllib.parse import urlencode
 
 #load env and get openai api key
 # dotenv.load_dotenv()
-spotify_client_id = st.secrets('CLIENT_ID')
+spotify_client_id = st.secrets['CLIENT_ID']
 # spotify_client_id = os.environ.get('CLIENT_ID')
-spotify_client_secret = st.secrets('CLIENT_SECRET')
+spotify_client_secret = st.secrets['CLIENT_SECRET']
 # spotify_client_secret = os.environ.get('CLIENT_SECRET')
 
 class SpotifyAPI(object):
