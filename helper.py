@@ -1,10 +1,12 @@
-import base64, requests, datetime, os, dotenv, pandas as pd,json as js
+import base64, requests, datetime, streamlit as st, pandas as pd,json as js
 from urllib.parse import urlencode
 
 #load env and get openai api key
-dotenv.load_dotenv()
-spotify_client_id = os.environ.get('CLIENT_ID')
-spotify_client_secret = os.environ.get('CLIENT_SECRET')
+# dotenv.load_dotenv()
+spotify_client_id = st.secrets('CLIENT_ID')
+# spotify_client_id = os.environ.get('CLIENT_ID')
+spotify_client_secret = st.secrets('CLIENT_SECRET')
+# spotify_client_secret = os.environ.get('CLIENT_SECRET')
 
 class SpotifyAPI(object):
     access_token = None
@@ -13,11 +15,6 @@ class SpotifyAPI(object):
     client_id = spotify_client_id
     client_secret = spotify_client_secret
     token_url = "https://accounts.spotify.com/api/token"
-
-    # def __init__(self, client_id, client_secret, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.client_id = client_id
-    #     self.client_secret = client_secret    
 
     def get_resource_header(self):
         access_token = self.get_access_token(spotify_client_id=spotify_client_id, spotify_client_secret=spotify_client_secret)
