@@ -1,4 +1,4 @@
-import warnings, icecream as ic, helper as h, pandas as pd, streamlit as st
+import warnings, helper as h, pandas as pd, streamlit as st
 
 spotify = h.SpotifyAPI()
 bearer_token = spotify.get_access_token(spotify.client_id,spotify.client_secret)
@@ -10,7 +10,7 @@ st.image("/root/spotify/media/somalisonic.png",caption="Somali Sonic")
 st.title("Let's party tonight!!!")
 
 genres = spotify.get_genres(bearer_token=bearer_token)
-ic.ic.disable()
+
 # st.write(genres['genres'])
 Name_of_genres = st.multiselect("Genres", genres['genres'],default=genres['genres'][94]) #r-n-b
 
@@ -83,13 +83,9 @@ if button_clicked:
         button_add_playlist = st.button("Toevoegen")
         if button_add_playlist:
             print(button_add_playlist)
-            ic.ic.enable()
             track_ids = [item['id'] for item in Data['tracks']]
-            ic.ic(track_ids)
             track_ids_str = ','.join(track_ids)
-            ic.ic(track_ids_str)
             added = spotify.add_to_playlist(bearer_token=bearer_token,playlist_id=playlist_df,track_ids=track_ids_str)
-            ic.ic(added)
         
 
 
