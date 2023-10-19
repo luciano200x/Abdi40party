@@ -6,7 +6,7 @@ bearer_token = spotify.get_access_token(spotify.client_id,spotify.client_secret)
 warnings.filterwarnings("ignore")
 
 st.set_page_config(page_title="Abdi's feestje!", page_icon="️‍‍☠️", layout="centered", initial_sidebar_state="auto", menu_items=None)
-st.image("/media/somalisonic.png",caption="Somali Sonic")
+st.image("media/somalisonic.png",caption="Somali Sonic")
 st.title("Let's party tonight!!!")
 
 genres = spotify.get_genres(bearer_token=bearer_token)
