@@ -1,12 +1,8 @@
-import base64, requests, datetime, streamlit as st, pandas as pd,json as js
+import  webbrowser, hashlib, random, string, base64, requests, datetime, pandas as pd,json as js, streamlit as st
 from urllib.parse import urlencode
 
-#load env and get openai api key
-# dotenv.load_dotenv()
 spotify_client_id = st.secrets['CLIENT_ID']
-# spotify_client_id = os.environ.get('CLIENT_ID')
 spotify_client_secret = st.secrets['CLIENT_SECRET']
-# spotify_client_secret = os.environ.get('CLIENT_SECRET')
 
 class SpotifyAPI(object):
     access_token = None
@@ -71,7 +67,8 @@ class SpotifyAPI(object):
         }
         response = requests.get(endpoint, headers=headers)
         if response.status_code == 429:
-            print("rate limited with status code:", response.status_code, "try again in: ", response.headers.get('Retry-After'))
+            returnmsg = f"rate limited with status code: {response.status_code}, try again in: {response.headers.get('Retry-After')} seconds."
+            return returnmsg
         if response.status_code == 200:
             json = response.json()
         return json
@@ -172,12 +169,16 @@ class SpotifyAPI(object):
     def get_current_user_profile(self,bearer_token: str) -> object:
         endpoint = "https://api.spotify.com/v1/me"
         headers = {
-            'Authorization': f'Bearer  {bearer_token}'
+            'Authorization': f'Bearer {bearer_token}'
         }
         response = requests.get(endpoint, headers=headers)
         if response.status_code == 200:
             json = response.json()
-        return json
+            return json
+        if response.status_code != 200:
+        # Handle error
+            print(f"Error getting user profile: {response.text}")
+            return None  # or return an appropriate error message or value
     
     def create_playlist(self,bearer_token:str,user_id:str,name:str,description:str,public:bool) -> object:
         endpoint = f"https://api.spotify.com/v1/users/{user_id}/playlists"
@@ -198,7 +199,7 @@ class SpotifyAPI(object):
     def add_to_playlist(self,bearer_token:str,playlist_id:str,track_ids:str) -> bool:
         endpoint = f"https://api.spotify.com/v1/playlists/{playlist_id}/tracks"
         headers = {
-            'Authorization': f'Bearer {bearer_token}',
+            'Authorization': f'Bearer  {bearer_token}',
             'Content-Type': 'application/json',
         }
 
@@ -210,12 +211,52 @@ class SpotifyAPI(object):
             "uris": uris,
             "position": 0
         }
-        
         # Send the POST request
         response = requests.post(endpoint, headers=headers, data=js.dumps(data))
-        
+        print(response.text)
         # Return True if the request was successful, otherwise return False
         r = False
         if response.status_code == 201:
             r = True
         return r   
+    
+    def generate_random_string(self,length):
+        characters = string.ascii_letters + string.digits
+        return ''.join(random.choice(characters) for i in range(length))
+    
+    def generate_code_challenge(self,code_verifier):
+        sha256 = hashlib.sha256(code_verifier.encode('utf-8')).digest()
+        base64_url = base64.urlsafe_b64encode(sha256).rstrip(b'=')
+        return base64_url.decode('utf-8')
+    
+    def request_user_authorization(self,client_id, redirect_uri, code_challenge):
+        state = self.generate_random_string(16)
+        scope = 'user-read-private user-read-email playlist-modify-public playlist-modify-private'
+        auth_url = (f"https://accounts.spotify.com/authorize?response_type=code&client_id={client_id}"
+                    f"&scope={scope}&redirect_uri={redirect_uri}&state={state}"
+                    f"&code_challenge_method=S256&code_challenge={code_challenge}")
+        webbrowser.open(auth_url)
+
+    def request_access_token(self,client_id, code, redirect_uri, code_verifier):
+        token_url = "https://accounts.spotify.com/api/token"
+        headers = {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+        data = {
+            'grant_type': 'authorization_code',
+            'code': code,
+            'redirect_uri': redirect_uri,
+            'client_id': client_id,
+            'code_verifier': code_verifier
+        }
+        response = requests.post(token_url, headers=headers, data=data)
+        return response.json()
+
+    def save_code_verifier_to_file(self,code_verifier):
+        with open('code_verifier.txt', 'w') as f:
+            f.write(code_verifier)
+
+    def get_code_verifier_from_file(self):
+        with open('code_verifier.txt', 'r') as f:
+            return f.read().strip()
+
