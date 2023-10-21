@@ -99,15 +99,13 @@ def main():
         # Create a dictionary with playlist names as keys and their IDs as values
         playlist_dict = {item['name']: item['id'] for item in playlists_obj['items']}
         # Populate the selectbox with playlist names
-        selected_playlist_name = st.selectbox("Playlist", list(playlist_dict.keys()),index=None,placeholder="Kies een playlist of maak een nieuwe")
+        selected_playlist_name = st.selectbox("Playlist, druk het kruisje rechts om een nieuwe playlist te maken.", list(playlist_dict.keys()),index=None,placeholder="Kies een playlist of maak een nieuwe")
         # Fetch the corresponding ID for the selected playlist name
         if not selected_playlist_name:
             Name_of_playlist = st.text_input("Vul de naam van je nieuwe playlist.",placeholder="bijv. Abdi's 40 Party")
             button_store_playlist = st.button("Opslaan")
-
             if button_store_playlist:
                 check = spotify.check_playlists(Name_of_playlist,playlists)
-                st.write(check)
                 if check:
                     spotify.create_playlist(bearer_token=bearer_token,
                                             user_id=userid,
