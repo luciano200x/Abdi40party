@@ -139,7 +139,7 @@ def main():
                 added = spotify.add_to_playlist(bearer_token=bearer_token,playlist_id=playlist_df,track_ids=track_ids_str)
                 if added:
                     st.write("De volgende nummers worden toegevoegd aan jouw playlist: ", Data_list)
-                    with st.spinner("Nummers zijn toegevoegd!"):
+                    with st.spinner("Nummers worden toegevoegd!"):
                         time.sleep(5)
                     st.rerun()
 
