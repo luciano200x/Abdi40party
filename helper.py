@@ -235,9 +235,7 @@ class SpotifyAPI(object):
         auth_url = (f"https://accounts.spotify.com/authorize?response_type=code&client_id={client_id}"
                     f"&scope={scope}&redirect_uri={redirect_uri}&state={state}"
                     f"&code_challenge_method=S256&code_challenge={code_challenge}")
-        # webbrowser.open(auth_url)
-        link = f'[Authorize on Spotify]({auth_url})'
-        st.markdown(link, unsafe_allow_html=True)
+        webbrowser.open(auth_url,2)
 
     def request_access_token(self,client_id, code, redirect_uri, code_verifier):
         token_url = "https://accounts.spotify.com/api/token"
