@@ -103,7 +103,7 @@ def main():
         if 'playlist' in st.session_state:
             selected_playlist_name = st.selectbox("Playlist, druk het kruisje rechts om een nieuwe playlist te maken.", list(playlist_dict.keys()),index=st.session_state.playlist,placeholder="Kies een playlist of maak een nieuwe")
         else:
-            selected_playlist_name = st.selectbox("Playlist, druk het kruisje rechts om een nieuwe playlist te maken.", list(playlist_dict.keys()),index=st.session_state.playlist,placeholder="Kies een playlist of maak een nieuwe")
+            selected_playlist_name = st.selectbox("Playlist, druk het kruisje rechts om een nieuwe playlist te maken.", list(playlist_dict.keys()),index=None,placeholder="Kies een playlist of maak een nieuwe")
         # Fetch the corresponding ID for the selected playlist name
         if not selected_playlist_name:
             Name_of_playlist = st.text_input("Vul de naam van je nieuwe playlist.",placeholder="bijv. Abdi's 40 Party")
