@@ -156,13 +156,9 @@ class SpotifyAPI(object):
             json = response.json()
         return json
 
-    def check_playlists(self,playlist_name, playlists_df):
-        """Checks if playlist has already been created."""
-        result = playlists_df[playlists_df['name'] == playlist_name].shape[0]
-        if result > 0:
-            return False
-        else:
-            return True
+    def check_playlists(self,playlist_name, playlists):
+        """Checks if playlist has not been created yet."""
+        return playlist_name not in playlists
 
     def save_playlists(self,playlist, playlist_name, playlists_df):
         """Saves playlist in a csv file."""
