@@ -108,7 +108,7 @@ def main():
             if button_store_playlist:
                 check = spotify.check_playlists(Name_of_playlist,playlists)
                 st.write(check)
-                if not check:
+                if check:
                     spotify.create_playlist(bearer_token=bearer_token,
                                             user_id=userid,
                                             name=Name_of_playlist,
