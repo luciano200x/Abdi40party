@@ -92,6 +92,7 @@ def main():
             st.session_state.Track_df = Track_df
             st.write(Track_df)
 
+
         #Create playlist JSON object
         playlists_obj = spotify.get_playlists(bearer_token=bearer_token,user_id=st.session_state.userid)
         #Create list of playlist names
@@ -112,7 +113,7 @@ def main():
                                             name=Name_of_playlist,
                                             description=Name_of_playlist,
                                             public=True)
-                    selected_playlist_name = Name_of_playlist
+                    # selected_playlist_name = Name_of_playlist
                 else:
                     st.write("Playlist bestaat al!")
         else:
