@@ -102,7 +102,7 @@ def main():
         selected_playlist_name = st.selectbox("Playlist", list(playlist_dict.keys()),index=None,placeholder="Kies een playlist of maak een nieuwe")
         # Fetch the corresponding ID for the selected playlist name
         if not selected_playlist_name:
-            Name_of_playlist = st.text_input("Vul de naam van je playlist.",value="bijv. Abdi's 40 Party")
+            Name_of_playlist = st.text_input("Vul de naam van je nieuwe playlist.",value="bijv. Abdi's 40 Party")
             button_store_playlist = st.button("Opslaan")
 
             if button_store_playlist:
@@ -113,9 +113,11 @@ def main():
                                             name=Name_of_playlist,
                                             description=Name_of_playlist,
                                             public=True)
+                    selected_playlist_name = Name_of_playlist
                 else:
                     st.write("Playlist bestaat al!")
-        playlist_df = playlist_dict[selected_playlist_name]
+        else:
+            playlist_df = playlist_dict[selected_playlist_name]
 
         if 'Track_df' in st.session_state and not st.session_state.Track_df.empty and playlist_df:
             st.caption("Wil je de tracks toevoegen aan je playlist? Klik dan toevoegen.")
