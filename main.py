@@ -106,6 +106,7 @@ def main():
             button_store_playlist = st.button("Opslaan")
 
             if button_store_playlist:
+                st.write(playlists)
                 check = spotify.check_playlists(Name_of_playlist,playlists)
                 if not check:
                     spotify.create_playlist(bearer_token=bearer_token,
