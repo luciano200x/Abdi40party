@@ -1,4 +1,5 @@
 import  webbrowser, hashlib, random, string, base64, requests, datetime, pandas as pd,json as js, streamlit as st
+from streamlit.components.v1 import html
 from urllib.parse import urlencode
 
 spotify_client_id = st.secrets['CLIENT_ID']
@@ -11,6 +12,14 @@ class SpotifyAPI(object):
     client_id = spotify_client_id
     client_secret = spotify_client_secret
     token_url = "https://accounts.spotify.com/api/token"
+
+    def open_page(self,url):
+        open_script= """
+            <script type="text/javascript">
+                window.open('%s', '_blank').focus();
+            </script>
+        """ % (url)
+        html(open_script)
 
     def get_resource_header(self):
         access_token = self.get_access_token(spotify_client_id=spotify_client_id, spotify_client_secret=spotify_client_secret)
@@ -235,7 +244,10 @@ class SpotifyAPI(object):
         auth_url = (f"https://accounts.spotify.com/authorize?response_type=code&client_id={client_id}"
                     f"&scope={scope}&redirect_uri={redirect_uri}&state={state}"
                     f"&code_challenge_method=S256&code_challenge={code_challenge}")
-        webbrowser.open(auth_url,2)
+        # webbrowser.open(auth_url,2)
+        # link = f'[Authorize on Spotify]({auth_url})'
+        # st.markdown(link, unsafe_allow_html=True)
+        st.button('Open link', on_click=self.open_page(auth_url))
 
     def request_access_token(self,client_id, code, redirect_uri, code_verifier):
         token_url = "https://accounts.spotify.com/api/token"
