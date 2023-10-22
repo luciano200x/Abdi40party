@@ -80,6 +80,7 @@ def main():
                 track_id = item['id']
                 song_name = item['name']
                 popularity = item['popularity']
+                url = item['href']
                 need.append({
                     'Item': i, 
                     'Artist': track['artists'][0]['name'], 
@@ -87,11 +88,22 @@ def main():
                     'Release Date': track['release_date'],
                     'Album Name': track['name'], 
                     'Id': track_id,  
-                    'Popularity': popularity
+                    'Popularity': popularity,
+                    'Link': url
                 })
             Track_df = pd.DataFrame(need)
             st.session_state.Track_df = Track_df
-            st.write(Track_df)
+            st.dataframe(
+                Track_df,
+                column_config={
+                    "Artist": "Artist",
+                    "Song Name": "Song Name",
+                    "Album Name": "Album Name",
+                    "Link": st.column_config.LinkColumn("Song URL"),
+                    "Popularity": "Popularity",
+                },
+                hide_index=True,
+            )
 
 
         #Create playlist JSON object
