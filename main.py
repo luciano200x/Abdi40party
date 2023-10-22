@@ -108,6 +108,7 @@ def main():
         if not selected_playlist_name:
             Name_of_playlist = st.text_input("Vul de naam van je nieuwe playlist.",placeholder="bijv. Abdi's 40 Party")
             button_store_playlist = st.button("Opslaan")
+            playlist_df = None
             if button_store_playlist:
                 check = spotify.check_playlists(Name_of_playlist,playlists)
                 if check:
