@@ -73,7 +73,7 @@ def main():
                                             target_danceability=Danceability,
                                             target_energy=Energy)
 
-            st.write(Data)
+            # st.write(Data)
             need = []
             for i, item in enumerate(Data['tracks']):
                 track = item['album']
@@ -89,20 +89,18 @@ def main():
                     'Album Name': track['name'], 
                     'Id': track_id,  
                     'Popularity': popularity,
-                    'Link': url['spotify']
+                    'Link': url['spotify'],
+                    'Image': track['images'][0]['url']
                 })
             Track_df = pd.DataFrame(need)
             st.session_state.Track_df = Track_df
             st.dataframe(
                 Track_df,
                 column_config={
-                    "Artist": "Artist",
-                    "Song Name": "Song Name",
-                    "Album Name": "Album Name",
                     "Link": st.column_config.LinkColumn("Song URL"),
-                    "Popularity": "Popularity",
+                    "Image": st.column_config.ImageColumn("Image")
                 },
-                column_order=("Artist","Song Name","Album Name","Link","Popularity"),
+                column_order=("Image","Artist","Song Name","Album Name","Link","Popularity"),
                 hide_index=True,
             )
 
