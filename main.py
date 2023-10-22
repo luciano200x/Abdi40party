@@ -80,7 +80,7 @@ def main():
                 track_id = item['id']
                 song_name = item['name']
                 popularity = item['popularity']
-                url = item['href']
+                url = item['external_urls']
                 need.append({
                     'Item': i, 
                     'Artist': track['artists'][0]['name'], 
@@ -89,7 +89,7 @@ def main():
                     'Album Name': track['name'], 
                     'Id': track_id,  
                     'Popularity': popularity,
-                    'Link': url
+                    'Link': url['spotify']
                 })
             Track_df = pd.DataFrame(need)
             st.session_state.Track_df = Track_df
