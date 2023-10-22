@@ -102,6 +102,7 @@ def main():
                     "Link": st.column_config.LinkColumn("Song URL"),
                     "Popularity": "Popularity",
                 },
+                column_order=("Artist","Song Name","Album Name","Link","Popularity"),
                 hide_index=True,
             )
 
