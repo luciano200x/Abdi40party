@@ -73,6 +73,7 @@ def main():
                                             target_danceability=Danceability,
                                             target_energy=Energy)
 
+            st.write(Data)
             need = []
             for i, item in enumerate(Data['tracks']):
                 track = item['album']
@@ -117,7 +118,6 @@ def main():
                                             name=Name_of_playlist,
                                             description=Name_of_playlist,
                                             public=True)
-                    # selected_playlist_name = Name_of_playlist
                     st.session_state.playlist = Name_of_playlist
                 else:
                     st.write("Playlist bestaat al!")
