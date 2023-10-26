@@ -5,7 +5,7 @@ spotify = h.SpotifyAPI()
 client_id = spotify.client_id
 redirect = "https://abdi40party.streamlit.app/?spotify_callback=true"
 
-@st.cache_resource
+# @st.cache_resource
 def get_manager():
     return stx.CookieManager()
 
