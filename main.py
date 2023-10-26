@@ -122,8 +122,8 @@ def main():
 
 
         #Create playlist JSON object
-        playlists_obj = spotify.get_playlists(bearer_token=bearer_token,user_id=st.session_state.userid)
-        #Create list of playlist names
+        if 'userid' in st.session_state and st.session_state.userid:
+            playlists_obj = spotify.get_playlists(bearer_token=bearer_token, user_id=st.session_state.userid)        #Create list of playlist names
         playlists = [item['name'] for item in playlists_obj['items']]
         # Create a dictionary with playlist names as keys and their IDs as values
         playlist_dict = {item['name']: item['id'] for item in playlists_obj['items']}
