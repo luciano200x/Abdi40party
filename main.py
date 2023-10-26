@@ -49,7 +49,8 @@ def main():
         userid = spotify.get_current_user_profile(bearer_token=st.session_state.access_token)['id']
         if userid:
             st.session_state.userid = userid
-            st.write("Hallo ",st.session_state.userid,"!!")
+            if 'userid' in st.session_state and st.session_state.userid:
+                st.write("Hallo ", st.session_state.userid, "!!")
 
     else:
         # Step 1: Generate Code Verifier and Challenge
