@@ -40,7 +40,7 @@ def main():
         code_verifier = spotify.get_code_verifier_from_file()
         response_json = spotify.request_access_token(client_id, st.session_state.code, redirect, code_verifier)
         access_token = response_json.get('access_token')
-        cookie_manager.set('access_token',access_token)
+        cookie_manager.set("access_token",access_token)
         if access_token is not None:
             st.session_state.access_token = access_token
         userid = spotify.get_current_user_profile(bearer_token=st.session_state.access_token)['id']
