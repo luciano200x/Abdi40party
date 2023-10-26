@@ -9,11 +9,6 @@ redirect = "https://abdi40party.streamlit.app/?spotify_callback=true"
 def get_manager():
     return stx.CookieManager()
 
-cookie_manager = get_manager()
-
-if 'cookies' not in st.session_state:
-    st.session_state['cookies'] = cookie_manager.get_all()
-
 # Streamlit App
 def main():
     warnings.filterwarnings("ignore")
@@ -24,6 +19,11 @@ def main():
 
     if 'code' not in st.session_state:
         st.session_state.code = None    
+
+    cookie_manager = get_manager()
+
+    if 'cookies' not in st.session_state:
+        st.session_state['cookies'] = cookie_manager.get_all()
 
     st.write(st.session_state['cookies'])
 
