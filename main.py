@@ -20,6 +20,9 @@ def main():
     if 'code' not in st.session_state:
         st.session_state.code = None    
 
+    if 'userid' not in st.session_state:
+        st.session_state.userid = None
+
     cookie_manager = get_manager()
 
     if 'cookies' not in st.session_state:
