@@ -47,10 +47,10 @@ def main():
         if access_token is not None:
             st.session_state.access_token = access_token
             userid = spotify.get_current_user_profile(bearer_token=st.session_state.access_token)['id']
-        if userid:
-            st.session_state.userid = userid
-            if 'userid' in st.session_state and st.session_state.userid:
-                st.write("Hallo ", st.session_state.userid, "!!")
+            if userid:
+                st.session_state.userid = userid
+                if 'userid' in st.session_state and st.session_state.userid:
+                    st.write("Hallo ", st.session_state.userid, "!!")
 
     else:
         # Step 1: Generate Code Verifier and Challenge
