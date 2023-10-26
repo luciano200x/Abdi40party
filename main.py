@@ -124,52 +124,52 @@ def main():
         #Create playlist JSON object
         if 'userid' in st.session_state and st.session_state.userid:
             playlists_obj = spotify.get_playlists(bearer_token=bearer_token, user_id=st.session_state.userid)        #Create list of playlist names
-        playlists = [item['name'] for item in playlists_obj['items']]
-        # Create a dictionary with playlist names as keys and their IDs as values
-        playlist_dict = {item['name']: item['id'] for item in playlists_obj['items']}
-        # Populate the selectbox with playlist names
-        if 'playlist' in st.session_state:
-            selected_playlist_name = st.selectbox("Playlist, druk het kruisje rechts om een nieuwe playlist te maken.", list(playlist_dict.keys()),index=st.session_state.playlist,placeholder="Kies een playlist of maak een nieuwe")
-        else:
-            selected_playlist_name = st.selectbox("Playlist, druk het kruisje rechts om een nieuwe playlist te maken.", list(playlist_dict.keys()),index=None,placeholder="Kies een playlist of maak een nieuwe")
-        # Fetch the corresponding ID for the selected playlist name
-        if not selected_playlist_name:
-            Name_of_playlist = st.text_input("Vul de naam van je nieuwe playlist.",placeholder="bijv. Abdi's 40 Party")
-            button_store_playlist = st.button("Opslaan")
-            playlist_df = None
-            if button_store_playlist:
-                check = spotify.check_playlists(Name_of_playlist,playlists)
-                if check:
-                    spotify.create_playlist(bearer_token=bearer_token,
-                                            user_id=userid,
-                                            name=Name_of_playlist,
-                                            description=Name_of_playlist,
-                                            public=True)
-                    st.session_state.playlist = Name_of_playlist
-                else:
-                    st.write("Playlist bestaat al!")
-        else:
-            playlist_df = playlist_dict[selected_playlist_name]
+            playlists = [item['name'] for item in playlists_obj['items']]
+            # Create a dictionary with playlist names as keys and their IDs as values
+            playlist_dict = {item['name']: item['id'] for item in playlists_obj['items']}
+            # Populate the selectbox with playlist names
+            if 'playlist' in st.session_state:
+                selected_playlist_name = st.selectbox("Playlist, druk het kruisje rechts om een nieuwe playlist te maken.", list(playlist_dict.keys()),index=st.session_state.playlist,placeholder="Kies een playlist of maak een nieuwe")
+            else:
+                selected_playlist_name = st.selectbox("Playlist, druk het kruisje rechts om een nieuwe playlist te maken.", list(playlist_dict.keys()),index=None,placeholder="Kies een playlist of maak een nieuwe")
+            # Fetch the corresponding ID for the selected playlist name
+            if not selected_playlist_name:
+                Name_of_playlist = st.text_input("Vul de naam van je nieuwe playlist.",placeholder="bijv. Abdi's 40 Party")
+                button_store_playlist = st.button("Opslaan")
+                playlist_df = None
+                if button_store_playlist:
+                    check = spotify.check_playlists(Name_of_playlist,playlists)
+                    if check:
+                        spotify.create_playlist(bearer_token=bearer_token,
+                                                user_id=userid,
+                                                name=Name_of_playlist,
+                                                description=Name_of_playlist,
+                                                public=True)
+                        st.session_state.playlist = Name_of_playlist
+                    else:
+                        st.write("Playlist bestaat al!")
+            else:
+                playlist_df = playlist_dict[selected_playlist_name]
 
-        if 'Track_df' in st.session_state and not st.session_state.Track_df.empty and playlist_df:
-            st.caption("Wil je de tracks toevoegen aan je playlist? Klik dan toevoegen.")
-            
-            st.session_state.button_clicked = False
-            button_add_playlist = st.button("Toevoegen")
+            if 'Track_df' in st.session_state and not st.session_state.Track_df.empty and playlist_df:
+                st.caption("Wil je de tracks toevoegen aan je playlist? Klik dan toevoegen.")
+                
+                st.session_state.button_clicked = False
+                button_add_playlist = st.button("Toevoegen")
 
-            if button_add_playlist:
-                st.session_state.button_clicked = True
+                if button_add_playlist:
+                    st.session_state.button_clicked = True
 
-            if st.session_state.button_clicked:
-                Data_list = st.session_state.Track_df
-                track_ids = Data_list['Id'].tolist()
-                track_ids_str = ','.join(track_ids)
-                added = spotify.add_to_playlist(bearer_token=bearer_token,playlist_id=playlist_df,track_ids=track_ids_str)
-                if added:
-                    st.write("De volgende nummers worden toegevoegd aan jouw playlist: ", Data_list)
-                    with st.spinner("Nummers worden toegevoegd!"):
-                        time.sleep(5)
-                    st.rerun()
+                if st.session_state.button_clicked:
+                    Data_list = st.session_state.Track_df
+                    track_ids = Data_list['Id'].tolist()
+                    track_ids_str = ','.join(track_ids)
+                    added = spotify.add_to_playlist(bearer_token=bearer_token,playlist_id=playlist_df,track_ids=track_ids_str)
+                    if added:
+                        st.write("De volgende nummers worden toegevoegd aan jouw playlist: ", Data_list)
+                        with st.spinner("Nummers worden toegevoegd!"):
+                            time.sleep(5)
+                        st.rerun()
 
         with open("ui/styles.md", "r") as styles_file:
             styles_content = styles_file.read()
