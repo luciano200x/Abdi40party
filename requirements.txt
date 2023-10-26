@@ -1,1 +1,2 @@
 pandas
+extra_streamlit_components
