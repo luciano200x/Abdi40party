@@ -1,9 +1,18 @@
-import warnings, helper as h, pandas as pd, streamlit as st, time
+import warnings, helper as h, pandas as pd, streamlit as st, extra_streamlit_components as stx, time
 
 spotify = h.SpotifyAPI()
 # bearer_token = spotify.get_access_token(spotify.client_id,spotify.client_secret)
 client_id = spotify.client_id
 redirect = "https://abdi40party.streamlit.app/?spotify_callback=true"
+
+@st.cache_resource
+def get_manager():
+    return stx.CookieManager()
+
+cookie_manager = get_manager()
+
+if 'cookies' not in st.session_state:
+    st.session_state['cookies'] = cookie_manager.get_all()
 
 # Streamlit App
 def main():
@@ -15,6 +24,8 @@ def main():
 
     if 'code' not in st.session_state:
         st.session_state.code = None    
+
+    st.write(st.session_state['cookies'])
 
     # Check if we're in the Spotify callback
     query_params = st.experimental_get_query_params()
