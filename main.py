@@ -24,7 +24,7 @@ def initialize_session_state():
 
 
 def handle_spotify_callback():
-    query_params = st.experimental_get_query_params()
+    query_params = st.query_params()
     spotify_callback = query_params.get("spotify_callback", [None])[0]
     if spotify_callback == "true":
         st.session_state.code = query_params.get("code", [None])[0]
@@ -167,6 +167,7 @@ def main():
 
     with open("ui/styles.md", "r") as styles_file:
         styles_content = styles_file.read()
+        
     st.write(styles_content, unsafe_allow_html=True)
 
 
