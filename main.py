@@ -152,7 +152,7 @@ def main():
 
     initialize_session_state()
 
-    st.write(st.session_state['cookies'])
+    st.session_state['cookies']
 
     handle_spotify_callback()
 
